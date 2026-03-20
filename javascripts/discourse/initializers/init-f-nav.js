@@ -55,13 +55,8 @@ function updateDataDestinations(username) {
 }
 
 export default apiInitializer("1.8.0", (api) => {
-  const site = api.container.lookup("site:main");
-
-  if (!site.mobileView) {
-    return;
-  }
-
   const user = api.getCurrentUser();
+  
   if (!user) {
     return;
   }
