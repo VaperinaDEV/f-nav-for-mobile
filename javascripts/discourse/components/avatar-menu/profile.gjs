@@ -23,11 +23,16 @@ import { i18n } from "discourse-i18n";
 
 export default class AvatarProfile extends Component {
   @service currentUser;
+  @service site;
   @service siteSettings;
   @service userStatus;
   @service modal;
 
   saving = false;
+
+  get shouldRender() {
+    return this.site.mobileView && this.currentUser;
+  }
 
   get showToggleAnonymousButton() {
     return (
@@ -121,7 +126,7 @@ export default class AvatarProfile extends Component {
   }
 
   <template>
-    {{#if this.currentUser}}
+    {{#if this.shouldRender}}
       <li id="current-user" class="header-dropdown-toggle current-user user-menu-panel">
         <DMenu
           @identifier="avatar-profile"

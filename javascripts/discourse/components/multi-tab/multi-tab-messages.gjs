@@ -8,10 +8,6 @@ import dIcon from "discourse-common/helpers/d-icon";
 import ChatIcon from "../messages/chat-icon";
 import MessagesIcon from "../messages/messages-icon";
 
-const ChatHeaderIconUnreadIndicator = optionalRequire(
-  "discourse/plugins/chat/discourse/components/chat/header/icon/unread-indicator"
-);
-
 export default class MultiTabMessages extends Component {
   @service site;
   @service currentUser;
@@ -20,6 +16,12 @@ export default class MultiTabMessages extends Component {
   get canUseChat() {
     return (
       this.currentUser?.has_chat_enabled && this.siteSettings?.chat_enabled
+    );
+  }
+
+  get ChatHeaderIconUnreadIndicator() {
+    return optionalRequire(
+      "discourse/plugins/chat/discourse/components/chat/header/icon/unread-indicator"
     );
   }
 
@@ -53,7 +55,7 @@ export default class MultiTabMessages extends Component {
             {{#if this.currentUser.new_personal_messages_notifications_count}}
               <div class="message-unread-indicator -urgent"></div>
             {{/if}}
-            <ChatHeaderIconUnreadIndicator
+            <this.ChatHeaderIconUnreadIndicator
               @urgentCount={{@urgentCount}}
               @unreadCount={{@unreadCount}}
               @indicatorPreference={{@indicatorPreference}}

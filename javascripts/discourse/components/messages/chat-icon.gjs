@@ -6,10 +6,6 @@ import getURL from "discourse-common/lib/get-url";
 import { optionalRequire } from "discourse/lib/utilities";
 import { i18n } from "discourse-i18n";
 
-const ChatHeaderIconUnreadIndicator = optionalRequire(
-  "discourse/plugins/chat/discourse/components/chat/header/icon/unread-indicator"
-);
-
 export default class ChatIcon extends Component {
   @service currentUser;
   @service site;
@@ -17,6 +13,12 @@ export default class ChatIcon extends Component {
 
   get showUnreadIndicator() {
     return !this.currentUserInDnD;
+  }
+
+  get ChatHeaderIconUnreadIndicator() {
+    return optionalRequire(
+      "discourse/plugins/chat/discourse/components/chat/header/icon/unread-indicator"
+    );
   }
 
   get currentUserInDnD() {
@@ -44,7 +46,7 @@ export default class ChatIcon extends Component {
     >
       {{~icon this.icon~}}
       {{#if this.showUnreadIndicator}}
-        <ChatHeaderIconUnreadIndicator
+        <this.ChatHeaderIconUnreadIndicator
           @urgentCount={{@urgentCount}}
           @unreadCount={{@unreadCount}}
           @indicatorPreference={{@indicatorPreference}}
