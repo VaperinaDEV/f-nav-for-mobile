@@ -230,24 +230,12 @@ body.f-nav-hidden {
     top: 0.5em;
   }
   
-  &.user-messages-page {
-    .show-mores {
-      top: 0.5em;
-    }
-  }
-  
   // Header hide everywhere but topic, pm and chat
   &:not(.archetype-regular):not(.archetype-private_message):not(.has-full-page-chat) {
     .d-header-wrap {
       transform: translateY(-100%);
       transition: transform 0.2s linear, opacity 0.1s linear;
       opacity: 0;
-    }
-    
-    #list-area {
-      .show-more {
-        top: 0.5em;
-      }
     }
 
     .leaderboard {
@@ -287,46 +275,6 @@ body.f-nav-hidden {
   .docked-composer.ai-bot-docked-composer:not(.docked-composer--at-bottom) {
     transition: transform 0.1s linear, bottom 0.1s linear;
   }
-
-  // Topic list pages
-  &.navigation-topics,
-  &.categories-list,
-  &.navigation-filter,
-  &[class*="tag-"]:not(.archetype-regular):not(.archetype-banner),
-  &[class*="category-"]:not(.archetype-regular):not(.archetype-banner) {
-  
-    // Navigation controls
-    .list-controls {
-      .nav-pills {
-        transform: translateY(-1em);
-        transition: transform 0.1s linear;
-      }
-      .navigation-container {
-        .navigation-controls {      
-          transform: translateY(-1em) scale(0);
-          transition: transform 0.1s linear;
-        }
-      }
-    }
-  }
-  
-  // Topic list pages
-  // Bulk Select
-  &.user-messages-page,
-  &.navigation-topics,
-  &.navigation-filter,
-  &.categories-list,
-  &[class*="tag-"]:not(.archetype-regular):not(.archetype-banner),
-  &[class*="category-"]:not(.archetype-regular):not(.archetype-banner) {    
-    // Bulk Select
-    .topic-list,
-    .topic-list.sticky-header {
-      .topic-list-header {
-        transform: translateY(-1em);
-        transition: transform 0.1s linear;
-      }
-    }
-  }
 }
 
 // Topic elements scroll up position
@@ -363,45 +311,6 @@ html:not(.anon) {
     .docked-composer.ai-bot-docked-composer:not(.docked-composer--at-bottom) {
       transform: translateY(calc(var(--f-nav-height) * -1));
       transition: transform 0.1s linear;
-    }
-
-    // Topic list pages
-    &.navigation-topics,
-    &.navigation-filter,
-    &.categories-list,
-    &[class*="tag-"]:not(.archetype-regular):not(.archetype-banner),
-    &[class*="category-"]:not(.archetype-regular):not(.archetype-banner) {
-      // Navigation controls
-      .list-controls {
-        .nav-pills {      
-          transform: translateY(calc((var(--f-nav-height) * -1) - 1em));
-          transition: transform 0.1s linear;
-        }   
-        .navigation-controls {
-          transform-origin: bottom;
-          transform: translateY(calc((var(--f-nav-height) * -1) - 1em));
-          transition: transform 0.1s linear;
-        }
-      }
-    }
-      
-    // Topic list pages 
-    // Bulk Select
-    &.user-messages-page,
-    &.navigation-topics,
-    &.navigation-filter,
-    &.categories-list,
-    &[class*="tag-"]:not(.archetype-regular):not(.archetype-banner),
-    &[class*="category-"]:not(.archetype-regular):not(.archetype-banner) {
-      
-      // Bulk Select
-      .topic-list,
-      .topic-list.sticky-header {
-        .topic-list-header {
-          transform: translateY(calc((var(--f-nav-height) * -1) - 1.3em));
-          transition: transform 0.1s linear;
-        }
-      }
     }
   }
     
