@@ -322,33 +322,9 @@ html:not(.anon) {
   }
 }
 
-// F NAV on /chat
-body.has-full-page-chat {
-  .d-header {
-    position: absolute;
-    top: -100vh;
-  }
-  .chat-composer__wrapper {
-    html:not(.keyboard-visible) & {
-      padding: 0.5rem 0 calc(var(--f-nav-height) + env(safe-area-inset-bottom)) 0;
-    }
-  }
-  .chat-selection-management {
-    padding-bottom: var(--f-nav-height);
-  }
-  .c-channel-info {
-    padding-bottom: var(--f-nav-height);
-  }
-  .chat-thread-list__items {
-    padding-bottom: var(--f-nav-height);
-  }
-  .c-footer {
-    padding-bottom: calc(var(--f-nav-height) + env(safe-area-inset-bottom));
-  }
+// Hide F NAV on /chat
+.has-full-page-chat {
   .f-nav {
-    border-top: none;
-    html.keyboard-visible & {
-      display: none;
-    }
+    display: none;
   }
 }
