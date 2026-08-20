@@ -328,3 +328,16 @@ html:not(.anon) {
     display: none;
   }
 }
+
+// Nested View
+.nested-view {
+  &__floating-actions {
+    body:not(.f-nav-hidden) & {
+      bottom: var(--f-nav-height);
+      transition: transform 0.3s ease, opacity 0.3s ease, bottom 0.1s linear;
+    }
+    body.f-nav-hidden  & {
+      transition: transform 0.3s ease, opacity 0.3s ease, bottom 0.1s linear;
+    }
+  }
+}
