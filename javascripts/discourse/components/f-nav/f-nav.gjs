@@ -111,6 +111,10 @@ export default class FNav extends Component {
       : base;
   }
 
+  get aiBotDestination() {
+    return "/discourse-ai/ai-bot/conversations";
+  }
+
   // Private methods
   #getDoNotDisturbDate() {
     const until = this.currentUser.get("do_not_disturb_until");
@@ -179,6 +183,7 @@ export default class FNav extends Component {
             @messagesDestination={{this.messagesDestination}}
             @searchDestination={{this.searchDestination}}
             @notificationsDestination={{this.notificationsDestination}}
+            @aiBotDestination={{this.aiBotDestination}}
             @onHomeClick={{this.homeTabRouteSwitcher}}
             @onHamburgerClick={{this.toggleHamburger}}
             @onNotificationClick={{this.navigateNotifications}}

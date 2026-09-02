@@ -14,12 +14,22 @@
   transition: transform 0.1s linear;
 
   .tab {
+    // Reset default <button> browser styles
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    
     color: var(--primary-high);
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1;
-    @include user-select(none);
+    user-select: none;
 
     &:active {
       will-change: background;
@@ -80,6 +90,15 @@
       div:nth-child(2) {
         margin-right: auto;
         z-index: 1;
+      }
+    }
+
+    .ai-bot-button {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      .d-icon {
+        color: var(--primary-high);
       }
     }
 

@@ -18,7 +18,6 @@ f_nav_tabs:
         required: true
       icon:
         type: string
-        required: true
       destination:
         type: string
         validations:
@@ -32,6 +31,7 @@ f_nav_tabs:
           - message
           - chat
           - multi
+          - aiBot
           - notificationToRoute
           - notificationMenu
           - search
@@ -68,6 +68,10 @@ hide_search:
   default: true
 hide_chat:
   description: "Hide the default header chat icon. This should disable if you don't want to add chat tab to F NAV."
+  type: bool
+  default: true
+hide_ai_bot_button:
+  description: "Hide the default header ai bot icon. This should disable if you don't want to add chat tab to F NAV."
   type: bool
   default: true
 svg_icons:
