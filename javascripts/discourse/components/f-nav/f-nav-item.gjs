@@ -1,4 +1,6 @@
 import Component from "@glimmer/component";
+import { getOwner } from "@ember/application";
+import { service } from "@ember/service";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import { and } from "truth-helpers";
@@ -10,8 +12,11 @@ import AllUnreadNotifications from "../notifications/all-unread";
 import ReviewableNotifications from "../notifications/reviewable";
 import MessagesIcon from "../messages/messages-icon";
 import ChatIcon from "../messages/chat-icon";
+import AiBot from "../ai-bot/ai-bot";
 
 export default class FNavItem extends Component {
+  @service currentUser;
+
   get isHome() {
     return this.args.tab?.function === "home";
   }
@@ -40,6 +45,10 @@ export default class FNavItem extends Component {
     return this.args.tab?.function === "search";
   }
 
+  get isAiBot() {
+    return this.args.tab?.function === "aiBot";
+  }
+
   get isNotificationToRoute() {
     return this.args.tab?.function === "notificationToRoute";
   }
@@ -53,6 +62,9 @@ export default class FNavItem extends Component {
     }
     if (this.isNotification) {
       return this.args.notificationsDestination;
+    }
+    if (this.isAiBot) {
+      return this.args.aiBotDestination;
     }
     if (this.isSearch) {
       return this.args.searchDestination;
@@ -76,6 +88,9 @@ export default class FNavItem extends Component {
     if (this.isSearch) {
       return this.args.onSearchClick;
     }
+    if (this.isAiBot) {
+      return () => {};
+    }
 
     return () => this.args.onNavigate(this.args.tab);
   }
@@ -84,58 +99,84 @@ export default class FNavItem extends Component {
     return settings.f_nav_show_labels;
   }
 
+  get manager() {
+    return getOwner(this)?.lookup("service:ai-conversations-sidebar-manager");
+  }
+
+  get bots() {
+    const availableBots = this.currentUser?.ai_enabled_chat_bots
+      ?.filter((bot) => !bot.is_agent || bot.has_default_llm)
+      .filter(Boolean);
+
+    return availableBots ? availableBots.map((bot) => bot.model_name) : [];
+  }
+
+  get isHidden() {
+    if (this.isAiBot) {
+      return !this.manager || this.bots.length === 0;
+    }
+  
+    return this.isChat && !this.args.canUseChat;
+  }
+
   <template>
-    <div
-      role="link"
-      class="tab"
-      data-destination={{this.destination}}
-      {{on "click" this.clickHandler}}
-    >
-      {{#if this.isHome}}
-        {{#if @isTopicRoute}}
-          {{dIcon "angle-left"}}
-        {{else}}
-          {{#if @topicTrackingState.hasIncoming}}
-            <a href="#" class="badge-notification has-incoming" tabindex="-1"></a>
-          {{/if}}
-          {{dIcon @tab.icon}}
-        {{/if}}
-      {{else if this.isMulti}}
-        <MultiTabMessages />
-      {{else if this.isMessage}}
-        <MessagesIcon />
-      {{else if this.isChat}}
-        {{#if @canUseChat}}
-          <ChatIcon />
-        {{/if}}
-      {{else if this.isNotification}}
-        {{#if @isInDoNotDisturbBadge}}
-          <div title={{i18n "notifications.paused"}}>
-            {{#if @showDoNotDisturbEndDate}}
-              {{formatAge @doNotDisturbDateTime}}
+    {{#unless this.isHidden}}
+      {{! Use <button> instead of a role="link" div so keyboard users get
+          native Enter/Space handling without extra ARIA scaffolding. }}
+      <button
+        type="button"
+        class="tab"
+        data-destination={{this.destination}}
+        {{on "click" this.clickHandler}}
+      >
+        {{#if this.isHome}}
+          {{#if @isTopicRoute}}
+            {{dIcon "angle-left"}}
+          {{else}}
+            {{#if @topicTrackingState.hasIncoming}}
+              <a href="#" class="badge-notification has-incoming" tabindex="-1"></a>
             {{/if}}
-            {{dIcon "bell-slash"}}
-          </div>
-        {{else}}
-          {{#if @currentUser.unseen_reviewable_count}}
-            <ReviewableNotifications />
-          {{else}}
-            <AllUnreadNotifications />
+            {{dIcon @tab.icon}}
           {{/if}}
+        {{else if this.isMulti}}
+          <MultiTabMessages />
+        {{else if this.isMessage}}
+          <MessagesIcon />
+        {{else if this.isAiBot}}
+          <AiBot />
+        {{else if this.isChat}}
+          {{#if @canUseChat}}
+            <ChatIcon />
+          {{/if}}
+        {{else if this.isNotification}}
+          {{#if @isInDoNotDisturbBadge}}
+            <div title={{i18n "notifications.paused"}}>
+              {{#if @showDoNotDisturbEndDate}}
+                {{formatAge @doNotDisturbDateTime}}
+              {{/if}}
+              {{dIcon "bell-slash"}}
+            </div>
+          {{else}}
+            {{#if @currentUser.unseen_reviewable_count}}
+              <ReviewableNotifications />
+            {{else}}
+              <AllUnreadNotifications />
+            {{/if}}
+            {{dIcon @tab.icon}}
+          {{/if}}
+        {{else}}
           {{dIcon @tab.icon}}
         {{/if}}
-      {{else}}
-        {{dIcon @tab.icon}}
-      {{/if}}
-      {{#if this.showLabels}}
-        <div class="tab-label">
-          {{#if (and this.isHome @isTopicRoute)}}
-            {{i18n "js.back_button"}}
-          {{else}}
-            {{@tab.name}}
-          {{/if}}
-        </div>
-      {{/if}}
-    </div>
+        {{#if this.showLabels}}
+          <div class="tab-label">
+            {{#if (and this.isHome @isTopicRoute)}}
+              {{i18n "js.back_button"}}
+            {{else}}
+              {{@tab.name}}
+            {{/if}}
+          </div>
+        {{/if}}
+      </button>
+    {{/unless}}
   </template>
 }
