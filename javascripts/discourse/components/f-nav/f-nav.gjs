@@ -1,12 +1,11 @@
 import Component from "@ember/component";
 import { service } from "@ember/service";
 import { action } from "@ember/object";
-import { tracked } from "@glimmer/tracking";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import willDestroy from "@ember/render-modifiers/modifiers/will-destroy";
-import { htmlSafe } from "@ember/template";
 import DiscourseURL from "discourse/lib/url";
 import DoNotDisturb from "discourse/lib/do-not-disturb";
+import EmbedMode from "discourse/lib/embed-mode";
 import FNavItem from "./f-nav-item";
 
 const SCROLL_MAX = 30;
@@ -62,15 +61,11 @@ export default class FNav extends Component {
   }
 
   // Computed properties for visibility and states
-  get isEmbedMode() {
-    return document.body.classList.contains("embed-mode");
-  }
-  
   get shouldShowNav() {
     return (
       this.currentUser &&
       this.site.mobileView &&
-      !this.isEmbedMode &&
+      !EmbedMode.enabled &&
       this.tabs.length
     );
   }
