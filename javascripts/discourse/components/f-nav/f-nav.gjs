@@ -62,8 +62,17 @@ export default class FNav extends Component {
   }
 
   // Computed properties for visibility and states
+  get isEmbedMode() {
+    return document.body.classList.contains("embed-mode");
+  }
+  
   get shouldShowNav() {
-    return this.currentUser && this.site.mobileView && this.tabs.length;
+    return (
+      this.currentUser &&
+      this.site.mobileView &&
+      !this.isEmbedMode &&
+      this.tabs.length
+    );
   }
 
   get canUseChat() {
